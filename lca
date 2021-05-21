@@ -1,0 +1,73 @@
+for both lca binary search tree and binary tree
+time - linear O(h) h is max height of p &q
+space -  path of p and q 
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+
+class Solution {
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        if(root == null)
+        {
+            return root;
+        }
+        
+        List<TreeNode> path_p = new ArrayList<>();
+         List<TreeNode> path_q = new ArrayList<>();
+        
+        backtrack(root, p, path_p);
+        backtrack(root, q, path_q);
+        
+        System.out.print(" path p");
+        for(int i=0; i< path_p.size(); i++)
+        {
+             System.out.print(" "+path_p.get(i).val);
+        }
+        System.out.println();
+         System.out.print(" path q");
+         for(int i=0; i< path_q.size(); i++)
+        {
+             System.out.print(" "+path_q.get(i).val);
+        }
+        
+        for(int i=0; i< path_p.size(); i++)
+        {
+            
+            if(path_p.get(i) != path_q.get(i))
+            {
+                return path_p.get(i-1);
+            }
+        }
+        
+        return null;
+    }
+    
+    private void backtrack(TreeNode root, TreeNode p,List<TreeNode> path )
+    {
+        //base 
+        if(root == null)
+            return;
+        
+        //logic
+        if(root == p)
+        {
+            //adding once
+            path.add(root);
+        }
+        //adding twice
+        path.add(root);
+        backtrack(root.left, p, path);
+        if(path.get(path.size()-1) == p)
+            return;
+        
+        backtrack(root.right, p, path);
+        
+        path.remove(path.size()-1);
+    }
+}
